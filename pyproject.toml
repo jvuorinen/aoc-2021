@@ -1,0 +1,7 @@
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".ruff_cache",
+]
+
+line-length = 100

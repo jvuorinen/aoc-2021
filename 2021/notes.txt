@@ -1,0 +1,73 @@
+Day 15
+------
+Solved this initially using a weird, inefficient game-tree search kind
+of thing that took minutes to run. Then did an improved version using 
+dijkstra, which runs in seconds. Just solve graph problems using
+tried-and-true solutions. In order to implement dijkstra, I had to
+write a custom priority queue that allows updating priorities. That
+was impossible to do with the built-in priority queue. 
+
+Interestingly, a-star did not improve dijkstra at all (actually it ran 
+slower due to overhead). Apparently a regular heuristic (euclidean / 
+manhattan distance) does not work too well in a bumpy surface like this.
+
+
+Day 18
+------
+Wasted a lot o time trying to keep the data in a nested form and
+using recursion. Ended up flattening is and using an efficient, 
+yet ugly iterative solution, which I converted back into the nested
+form for calculating the magnitude (felt like this was needed because
+the right-left information was lost in flattening and needed to be
+recreated). All in all, the solution feels clumsy and there has to be
+a more elegant way.
+
+
+Day 19
+------
+This was a fun exercise. The solution is pretty inefficient and takes
+minutes. Would it be possible to find a quicker way to check
+matches than checking all orienation-beacon-beacon combinations?
+
+
+Day 21
+------
+I'm pretty happy about the solution. The generic state-transition function 
+can be used in partial functions that are bound to a specific ruleset.
+This functional composition design works nicely in this case. 
+Also, performance was good.
+
+
+Day 22
+------
+This was surprisingly time consuming. I'm happy about the generic 
+design of n-dimensional hypercubes made of voxels. Performance was 
+not great though, takes around 20 seconds to run. Could likely 
+be optimised by checking which cubes can overlap instead of 
+churning through all of them each time.
+
+
+Day 23
+------
+Coding the simulator took a lot of time, and is messy. It also will
+not give the optimal solution in case any bug happens to be in the
+optimal place already (as in the example input). The backtracking search 
+algorithm was done with a recursive function taking in the simulator 
+state and a book_keeping dict for keeping score, this was a fairly
+elegant solution. 
+
+The important thing here was finding ways to prune the game tree to 
+make the search fast enough. With the assumption that you always step 
+into the goal if such a move is possible, I was able to run the searches 
+in around 5 minutes total (after memoizing the most-used function that 
+retrieves neighbor coordinates).
+
+
+Day 24
+------
+This was a fun one. Using pointers for mem addresses would have
+been nice, I used python lists to get the same effect. As for the
+solution to finding the correct codes, after dabblind around
+I ended up building an interactive cli tool for cracking the 
+code, which worked and was fun. I still have no idea what the logic
+behind what MONAD is doing though.
