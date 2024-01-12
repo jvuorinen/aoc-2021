@@ -11,4 +11,4 @@ def not_anagram(words):
 a1 = sum([len(p) == len(set(p)) for p in phrases])
 a2 = sum([all(map(not_anagram, combinations(p, 2))) for p in phrases])
 
-print_answers(a1, a2, day=4)
+print_answers(a1, a2, day=4)  # 455 186
