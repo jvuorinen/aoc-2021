@@ -1,14 +1,14 @@
-from itertools import combinations, permutations
-from functools import reduce
-from collections import Counter, defaultdict
-from math import prod
-import numpy as np
+from itertools import combinations
 from utils import read, print_answers
 
-raw = read()
-# raw = read(2017, 4).split("\n")
+phrases = [x.split(" ") for x in read(2017, 4).split("\n")]
 
 
-a1 = None
-a2 = None
+def not_anagram(words):
+    return set(list(words[0])) != set(list(words[1]))
+
+
+a1 = sum([len(p) == len(set(p)) for p in phrases])
+a2 = sum([all(map(not_anagram, combinations(p, 2))) for p in phrases])
+
 print_answers(a1, a2, day=4)
