@@ -5,7 +5,7 @@ from math import prod
 import numpy as np
 from utils import read, print_answers
 
-raw = read()
+raw = read().split("\n")
 # raw = read(2017, None).split("\n")
 
 
