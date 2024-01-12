@@ -7,7 +7,7 @@ from utils import read, print_answers
 def parse_graph(raw):
     G = nx.DiGraph()
     for line in raw:
-        n, w, *children = re.findall(r'\w+', line)
+        n, w, *children = re.findall(r"\w+", line)
         G.add_node(n, weight=int(w))
         for c in children:
             G.add_edge(n, c)
@@ -26,6 +26,7 @@ def get_problem(node):
     if len(counts) > 1:
         bad_weight, good_weight = sorted(counts, key=counts.get)
         return children[weights.index(bad_weight)], good_weight
+
 
 raw = read(2017, 7).split("\n")
 
