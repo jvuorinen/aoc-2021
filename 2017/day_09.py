@@ -26,4 +26,4 @@ for c in stream:
         case _, True:
             n_garbage += 1
 
-print_answers(n_groups, n_garbage, day=9)
+print_answers(n_groups, n_garbage, day=9)  # 10800 4522

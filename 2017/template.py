@@ -3,6 +3,7 @@ from functools import reduce
 from collections import Counter, defaultdict
 from math import prod
 import numpy as np
+import re
 from utils import read, print_answers
 
 raw = read().split("\n")
