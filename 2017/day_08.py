@@ -8,7 +8,7 @@ reg = defaultdict(int)
 for cmd in cmds:
     instr, cond = cmd.split(" if ")
     if eval(cond, {}, reg):
-        instr = instr.replace('inc', "+=").replace('dec', "-=")
+        instr = instr.replace("inc", "+=").replace("dec", "-=")
         exec(instr, {}, reg)
     best = max(best, max(reg.values()))
 
