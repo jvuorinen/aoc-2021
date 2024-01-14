@@ -2,7 +2,7 @@ from utils import read, print_answers
 
 
 def is_caught(time, range):
-    return time % (range * 2 - 2) == 0
+    return time % ((range - 1) * 2) == 0
 
 
 raw = read(2017, 13).split("\n")
