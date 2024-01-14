@@ -4,6 +4,7 @@ from collections import Counter, defaultdict
 from math import prod
 import numpy as np
 import re
+import networkx as nx
 from utils import read, print_answers
 
 raw = read().split("\n")
