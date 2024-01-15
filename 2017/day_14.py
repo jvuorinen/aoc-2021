@@ -1,4 +1,5 @@
 from functools import reduce
+from itertools import chain
 import networkx as nx
 from utils import read, print_answers
 
@@ -15,8 +16,8 @@ def knot(word, times=64):
     st = -s % len(lst)
     lst = lst[st:] + lst[:st]
     dense = [reduce(int.__xor__, lst[i : i + 16]) for i in range(0, len(lst), 16)]
-    hx = "".join([hex(x)[2:].zfill(2) for x in dense])
-    bn = "".join([bin(int(x, 16))[2:].zfill(4) for x in hx])
+    hx = chain(*((x // 16, x % 16) for x in dense))
+    bn = "".join(f"{x:04b}" for x in hx)
     return bn
 
 
@@ -34,4 +35,4 @@ for x in ones:
 a1 = len(ones)
 a2 = nx.number_connected_components(G)
 
-print_answers(a1, a2, day=99)
+print_answers(a1, a2, day=14)  # 8250 1113
