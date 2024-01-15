@@ -16,8 +16,8 @@ def knot(word, times=64):
     st = -s % len(lst)
     lst = lst[st:] + lst[:st]
     dense = [reduce(int.__xor__, lst[i : i + 16]) for i in range(0, len(lst), 16)]
-    hx = chain(*((x // 16, x % 16) for x in dense))
-    bn = "".join(f"{x:04b}" for x in hx)
+    hx = "".join(f"{x:02x}" for x in dense)
+    bn = f"{int(hx, 16):0128b}"
     return bn
 
 
