@@ -22,7 +22,6 @@ def knot(word, times=64):
 
 
 word = read(2017, 14)
-
 ones = set([i + j * 1j for j in range(128) for i, c in enumerate(knot(f"{word}-{j}")) if c == "1"])
 
 G = nx.Graph()
