@@ -15,18 +15,23 @@ def run(lst, inputs, times):
     return lst
 
 
-raw = read(2017, 10)
-lst = [x for x in range(256)]
+def knot(word):
+    inputs = [*map(ord, word)] + [17, 31, 73, 47, 23]
+    lst = [x for x in range(256)]
+    sparse = run(lst, inputs, 64)
+    dense = [reduce(int.__xor__, sparse[i : i + 16]) for i in range(0, len(lst), 16)]
+    return "".join(f"{x:02x}" for x in dense)
 
-# Part 1
-inputs = [int(x) for x in raw.split(",")]
-_lst = run(lst, inputs, 1)
-a1 = _lst[0] * _lst[1]
 
-# Part 2
-inputs = [*map(ord, raw)] + [17, 31, 73, 47, 23]
-sparse = run(lst, inputs, 64)
-dense = [reduce(int.__xor__, sparse[i : i + 16]) for i in range(0, len(sparse), 16)]
-a2 = "".join([hex(x)[2:].zfill(2) for x in dense])
+if __name__ == "__main__":
+    raw = read(2017, 10)
 
-print_answers(a1, a2, day=9)  # 212 96de9657665675b51cd03f0b3528ba26
+    # Part 1
+    inputs = [int(x) for x in raw.split(",")]
+    lst = run([*range(256)], inputs, 1)
+    a1 = lst[0] * lst[1]
+
+    # Part 2
+    a2 = knot(raw)
+
+    print_answers(a1, a2, day=10)  # 212 96de9657665675b51cd03f0b3528ba26
