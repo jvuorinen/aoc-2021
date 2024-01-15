@@ -1,5 +1,4 @@
 from functools import reduce
-from itertools import chain
 import networkx as nx
 from utils import read, print_answers
 
