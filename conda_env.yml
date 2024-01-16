@@ -14,5 +14,6 @@ dependencies:
   - networkx
   - pytest
   - scipy
+  - numba
   - line_profiler
   
