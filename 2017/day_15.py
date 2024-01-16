@@ -5,7 +5,7 @@ M = 2147483647
 
 
 @njit
-def generator(val, mul, skip=1):
+def generator(val, mul, skip):
     while True:
         val = val * mul % M
         if val % skip == 0:
@@ -13,9 +13,9 @@ def generator(val, mul, skip=1):
 
 
 @njit
-def do(a, b, sims):
-    gen_a = generator(a, 16807, 4)
-    gen_b = generator(b, 48271, 8)
+def do(a, b, sims, skip_a, skip_b):
+    gen_a = generator(a, 16807, skip_a)
+    gen_b = generator(b, 48271, skip_b)
 
     c = 0
     for _ in range(1, sims + 1):
@@ -29,6 +29,7 @@ def do(a, b, sims):
 raw = read(2017, 15).split("\n")
 a, b = [int(x.split()[-1]) for x in raw]
 
-a1 = do(a, b, 40_000_000)
-a2 = do(a, b, 5_000_000)
-print_answers(a1, a2, day=15)  # 2394 285
+a1 = do(a, b, 40_000_000, 1, 1)
+a2 = do(a, b, 5_000_000, 4, 8)
+
+print_answers(a1, a2, day=15)  # 612 285
