@@ -17,19 +17,18 @@ def dance(word, cmds):
     return "".join(prgs)
 
 
-def dance_much(word, times):
+def dance_much(word, cmds, times):
     seen = []
-    while True:
-        if word in seen:
-            return seen[times % len(seen)]
+    while word not in seen:
         seen.append(word)
         word = dance(word, cmds)
+    return seen[times % len(seen)]
 
 
 cmds = read(2017, 16).split(",")
 word = "abcdefghijklmnop"
 
 a1 = dance(word, cmds)
-a2 = dance_much(word, int(1e9))
+a2 = dance_much(word, cmds, int(1e9))
 
 print_answers(a1, a2, day=16)  # nlciboghjmfdapek nlciboghmkedpfja
