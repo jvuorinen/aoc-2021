@@ -1,18 +1,15 @@
-from numba import njit
+from collections import deque
 from utils import read, print_answers
 
 
-@njit
 def solve(ref, spins, steps):
-    nxt = [*range(spins + 1)]
-    curr = 0
+    slock = deque([0])
+
     for i in range(1, spins + 1):
-        for _ in range(steps):
-            curr = nxt[curr]
-        nxt[i] = nxt[curr]
-        nxt[curr] = i
-        curr = i
-    return nxt[ref]
+        slock.rotate(-steps)
+        slock.append(i)
+
+    return slock[(slock.index(ref) + 1) % len(slock)]
 
 
 steps = int(read(2017, 17))
