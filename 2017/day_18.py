@@ -3,6 +3,7 @@ from utils import read, print_answers
 
 cmds = read(2017, 18).split("\n")
 
+
 def run(p, cmds, out):
     mem = defaultdict(int)
     mem["p"] = p
@@ -27,17 +28,19 @@ def run(p, cmds, out):
             case "rcv":
                 mem[args[0]] = yield
 
+
 queue = []
 progs = [run(0, cmds, queue), run(1, cmds, queue)]
 next(progs[0])
 next(progs[1])
 
+a1 = [msg for snd, msg in queue if snd == 0][-1]
+
 a2 = 0
 while queue:
-    sender, val = queue.pop(0) 
+    sender, val = queue.pop(0)
     if sender == 1:
         a2 += 1
     progs[sender ^ 1].send(val)
 
-a1 = None
 print_answers(a1, a2, day=18)  # 2951 7366
