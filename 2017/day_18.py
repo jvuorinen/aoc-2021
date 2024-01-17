@@ -1,8 +1,6 @@
 from collections import defaultdict
 from utils import read, print_answers
 
-cmds = read(2017, 18).split("\n")
-
 
 def run(p, cmds, out):
     mem = defaultdict(int)
@@ -28,6 +26,8 @@ def run(p, cmds, out):
             case "rcv":
                 mem[args[0]] = yield
 
+
+cmds = read(2017, 18).split("\n")
 
 queue = []
 progs = [run(0, cmds, queue), run(1, cmds, queue)]
