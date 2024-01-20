@@ -23,10 +23,10 @@ while i < len(cmds):
                 i += int(eval(f"{args[1]}", {}, mem) - 1)
 
 
-def is_prime(n):
-    return all(n % i != 0 for i in range(2, int(n**0.5) + 1))
+def not_prime(n):
+    return any(n % i == 0 for i in range(2, int(n**0.5) + 1))
 
 
-a2 = sum([not is_prime(x) for x in range(109900, 109900 + 17001, 17)])
+a2 = sum([not_prime(x) for x in range(109900, 109900 + 17001, 17)])
 
 print_answers(a1, a2, day=23)  # 9409 913
