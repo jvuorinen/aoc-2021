@@ -23,9 +23,8 @@ state, steps, ops = parse(raw)
 mem = defaultdict(int)
 i = 0
 for _ in range(steps):
-    w, d, state = ops[state][mem[i]]
-    mem[i] = w
+    mem[i], d, state = ops[state][mem[i]]
     i += d
 
 a1 = sum(v == 1 for v in mem.values())
-print_answers(a1, None, day=25)
+print_answers(a1, None, day=25)  # 633
