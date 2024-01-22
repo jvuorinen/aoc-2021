@@ -16,4 +16,5 @@ for cmd in cmds:
 
 a1 = int(abs(loc.real) + abs(loc.imag))
 a2 = int(abs(hq.real) + abs(hq.imag))
+
 print_answers(a1, a2, day=1)
