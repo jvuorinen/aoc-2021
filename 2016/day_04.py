@@ -3,6 +3,12 @@ from string import ascii_lowercase as abc
 from utils import read, print_answers
 
 
+def is_legit(words, chk):
+    c = Counter("".join(words))
+    _chk = "".join(sorted(c, key=lambda x: (c[x], -ord(x)), reverse=True)[:5])
+    return chk == _chk
+
+
 def decypher(word, r):
     return "".join(abc[(abc.index(c) + r) % len(abc)] for c in word)
 
@@ -16,9 +22,7 @@ for line in read(2016, 4).split("\n"):
     if decrypted == "northpole object storage":
         a2 = rid
 
-    c = Counter("".join(words))
-    _chk = "".join(sorted(c, key=lambda x: (c[x], -ord(x)), reverse=True)[:5])
-    if chk == _chk:
+    if is_legit(words, chk):
         a1 += int(rid)
 
 print_answers(a1, a2, day=4)

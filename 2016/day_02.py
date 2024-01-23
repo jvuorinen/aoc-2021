@@ -46,4 +46,4 @@ keypad2 = {
 a1 = solve(cmds, keypad1)
 a2 = solve(cmds, keypad2)
 
-print_answers(a1, a2, day=99)  # 47978 659AD
+print_answers(a1, a2, day=2)
