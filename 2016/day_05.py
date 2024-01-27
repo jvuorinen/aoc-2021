@@ -8,12 +8,12 @@ def solve(base):
     pw2 = [None for _ in range(8)]
     i = 0
     while None in pw2:
-        hx = md5(f"{base}{i}".encode(), usedforsecurity=False).hexdigest()
+        hx = md5(f"{base}{i}".encode()).hexdigest()
         if hx[:5] == "00000":
             sixth = hx[5]
             pw1.append(sixth)
-            if sixth.isdigit() and (d := int(sixth)) < 8 and pw2[d] is None:
-                pw2[d] = hx[6]
+            if (loc := int(sixth, 16)) < 8 and pw2[loc] is None:
+                pw2[loc] = hx[6]
         i += 1
     return map("".join, (pw1[:8], pw2))
 
