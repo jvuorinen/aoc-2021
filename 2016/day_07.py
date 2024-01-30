@@ -10,12 +10,8 @@ def has_abba(s):
     return any(is_abba(s[i : i + 4]) for i in range(len(s) - 3))
 
 
-def is_aba(w):
-    return w[0] == w[2] != w[1]
-
-
 def get_abas(w):
-    return [chk for i in range(len(w) - 2) if is_aba(chk := w[i : i + 3])]
+    return [a + b + c for a, b, c in zip(w, w[1:], w[2:]) if (a == c != b)]
 
 
 def invert(aba):
@@ -26,14 +22,14 @@ ips = read(2016, 7).split("\n")
 
 a1 = a2 = 0
 for s in ips:
-    hypers = re.findall(r"\[([a-z]+)\]", s)
-    others = re.sub(r"\[[a-z]+\]", " ", s).split()
+    hypers = " ".join(re.findall(r"\[([a-z]+)\]", s))
+    others = " ".join(re.sub(r"\[[a-z]+\]", " ", s).split())
 
-    if not any(map(has_abba, hypers)) and any(map(has_abba, others)):
+    if has_abba(others) and not has_abba(hypers):
         a1 += 1
 
-    h_abas = set.union(*[set(get_abas(x)) for x in hypers])
-    o_babs = set.union(*[set(map(invert, get_abas(x))) for x in others])
+    h_abas = set(get_abas(hypers))
+    o_babs = set(map(invert, get_abas(others)))
     if len(h_abas & o_babs) > 0:
         a2 += 1
 
