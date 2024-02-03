@@ -1,5 +1,6 @@
 from collections import defaultdict
 from math import prod
+import re
 from utils import read, print_answers
 
 raw = read(2016, 10).split("\n")
@@ -8,17 +9,14 @@ holdings = defaultdict(list)
 targets = {}
 for line in raw:
     spl = line.split(" ")
-    if spl[0] == "value":
-        c, b = int(spl[1]), " ".join(spl[-2:])
-        holdings[b].append(c)
-        if len(holdings[b]) == 2:
-            todo = [b]
+    if line.startswith("value"):
+        c, b = re.findall(r"value (\d+) goes to (bot \d+)", line)[0]
+        holdings[b].append(int(c))
     else:
-        fr = " ".join(spl[0:2])
-        t1 = " ".join(spl[5:7])
-        t2 = " ".join(spl[10:12])
+        fr, t1, t2 = re.findall(r"(?:bot|output) \d+", line)
         targets[fr] = (t1, t2)
 
+todo = [k for k, v in holdings.items() if len(v) == 2]
 while todo:
     b = todo.pop(0)
     chips = sorted(holdings[b])
