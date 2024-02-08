@@ -25,9 +25,7 @@ class State:
         return hash(state)
 
     def __eq__(self, other):
-        if isinstance(other, State):
-            return hash(self) == hash(other)
-        return False
+        return hash(self) == hash(other)
 
 
 def parse(raw):
