@@ -72,7 +72,7 @@ def solve(st, extras=False):
     n_items = st.get_n_items()
     todo = [st]
     seen = set()
-    while True:
+    while todo:
         rnd = set()
         for st in todo:
             if len(st.floors[3]) == n_items:
