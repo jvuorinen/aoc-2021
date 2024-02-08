@@ -48,8 +48,7 @@ def floor_ok(flr):
 
 def get_children(state):
     current = state.floors[state.e]
-    carry = [set([x]) for x in current] + [*map(set, combinations(current, 2))]
-    res = []
+    carry = [*map(set, set(combinations(current, 1)) | set(combinations(current, 2)))]
     for cr in carry:
         if floor_ok(current - cr):
             floors = [nxt for d in (-1, 1) if 0 <= (nxt := state.e + d) <= 3]
@@ -62,8 +61,7 @@ def get_children(state):
                     st.floors[state.e] -= cr
                     st.floors[f] |= cr
                     st.i += 1
-                    res.append(st)
-    return res
+                    yield st
 
 
 def solve(st, extras=False):
