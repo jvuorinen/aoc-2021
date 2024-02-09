@@ -11,6 +11,7 @@ class State:
     floors: list[set]
     i: int = 0
     predecessor: Optional["State"] = None
+    _hash = None
 
     def copy(self):
         return State(e=self.e, floors=[x.copy() for x in self.floors], i=self.i, predecessor=self)
@@ -19,10 +20,12 @@ class State:
         return len(set.union(*self.floors))
 
     def __hash__(self) -> int:
-        locs = {x: i for i, f in enumerate(self.floors) for x in f}
-        substances = set(x[:2] for x in locs.keys())
-        state = tuple([self.e] + sorted((locs[f"{s}-g"], locs[f"{s}-m"]) for s in substances))
-        return hash(state)
+        if not self._hash:
+            locs = {x: i for i, f in enumerate(self.floors) for x in f}
+            substances = set(x[:2] for x in locs.keys())
+            state = tuple([self.e] + sorted((locs[f"{s}-g"], locs[f"{s}-m"]) for s in substances))
+            self._hash = hash(state)
+        return self._hash
 
     def __eq__(self, other):
         return hash(self) == hash(other)
