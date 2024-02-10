@@ -25,8 +25,9 @@ def run(program, part2=False):
     while mem["i"] < len(program):
         cmd = program[mem["i"]]
         if mem["i"] == 10:
-            mem["a"] += mem["b"] - 1
-            mem["b"] -= mem["b"] - 1
+            shortcut = mem["b"] - 1
+            mem["a"] += shortcut
+            mem["b"] -= shortcut
         exec(cmd, {}, mem)
     return mem["a"]
 
