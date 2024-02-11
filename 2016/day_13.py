@@ -12,21 +12,21 @@ def is_wall(loc):
 
 
 def crawl(loc):
-    seen, history = set(), []
+    seen = {}
     Q = [(loc, 0)]
     while Q:
         x, s = Q.pop(0)
         if x not in seen:
-            seen.add(x)
-            history.append((x, s))
+            seen[x] = s
         for d in (-1, 1, -1j, 1j):
             if not is_wall(_x := x + d) and _x not in seen:
                 Q.append((_x, s + 1))
-    return history
+    return seen
 
 
-history = crawl(1 + 1j)
-a1 = next(st for loc, st in history if loc == 31 + 39j)
-a2 = sum(1 for _, st in history if st <= 50)
+seen = crawl(1 + 1j)
+
+a1 = seen[31 + 39j]
+a2 = sum(1 for v in seen.values() if v <= 50)
 
 print_answers(a1, a2, day=13)
