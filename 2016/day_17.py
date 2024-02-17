@@ -14,14 +14,14 @@ def get_dirs(loc, path):
     return [d for d, h in zip(DIRS.keys(), hsh) if h in "bcdef" and is_legit(loc + DIRS[d])]
 
 
-solutions = set()
+solutions = []
 seen = set()
 Q = [(0j, "")]
 while Q:
     loc, path = Q.pop(0)
     seen.add((loc, path))
     if loc == 3 + 3j:
-        solutions.add(path)
+        solutions.append(path)
     else:
         for d in get_dirs(loc, path):
             _loc = loc + DIRS[d]
@@ -29,7 +29,4 @@ while Q:
             if (_loc, _path) not in seen:
                 Q.append((_loc, _path))
 
-a1 = min(solutions, key=len)
-a2 = max(map(len, solutions))
-
-print_answers(a1, a2, day=17)
+print_answers(solutions[0], len(solutions[-1]), day=17)
