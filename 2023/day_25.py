@@ -1,7 +1,7 @@
 import networkx as nx
-from utils import read_file, print_answers
+from utils import read, print_answers
 
-raw_in = read_file("inputs/day_25b.txt")
+raw_in = read(2023, 25)
 
 g = nx.Graph()
 for line in raw_in.split("\n"):

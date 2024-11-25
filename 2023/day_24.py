@@ -1,12 +1,12 @@
 from itertools import combinations
-from utils import read_file, print_answers
+from utils import read, print_answers
 import numpy as np
 import sympy as sym
 
 
-def parse(file):
+def parse():
     hails = []
-    for line in read_file(file).split("\n"):
+    for line in read(2023, 24).split("\n"):
         h = line.split(" @ ")
         hails.append([tuple([*map(int, x.split(","))]) for x in h])
     return hails
@@ -49,7 +49,7 @@ def get_perfect_throw(hails):
     return sym.solve(eqs, (x, y, z, dx, dy, dz, t1, t2, t3))[0]
 
 
-hails = parse("inputs/day_24b.txt")
+hails = parse()
 
 a1 = sum([do_cross(h1, h2, 2e14, 4e14) for h1, h2 in combinations(hails, 2)])
 a2 = sum(get_perfect_throw(hails)[:3])
