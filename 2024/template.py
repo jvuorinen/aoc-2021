@@ -1,6 +1,6 @@
 from itertools import combinations, permutations, count, cycle
 from functools import reduce, cache
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
 from math import prod
 import numpy as np
 import re
