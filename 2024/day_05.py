@@ -6,8 +6,8 @@ raw = read(2024, 5)
 _rules, _updates = raw.split("\n\n")
 
 rules = defaultdict(int)
-for upd in _rules.split("\n"):
-    x, y = upd.split("|")
+for _rule in _rules.split("\n"):
+    x, y = _rule.split("|")
     rules[(x, y)] = -1
     rules[(y, x)] = 1
 
