@@ -1,13 +1,9 @@
 from utils import read, print_answers
 
-raw = read()
-# raw = read(2024, 6)
+raw = read().split('\n')
+area = {c - 1j * r: x for r, line in enumerate(raw) for c, x in enumerate(line)}
 
-area = {c - 1j * r: x for r, line in enumerate(raw.split("\n")) for c, x in enumerate(line)}
-
-
-# p1
-def solve(area, additional_obs=None):
+def run(area, additional_obs=None):
     area = area.copy()
     if additional_obs:
         area[additional_obs] = "#"
@@ -20,20 +16,15 @@ def solve(area, additional_obs=None):
         if state in seen:
             return "loop"
         seen.add(state)
-        if area.get(loc + hdg) == "#":
+        while area.get(loc + hdg) == "#":
             hdg *= -1j
         loc += hdg
     return len(set(x[0] for x in seen))
 
 
-a1 = solve(area)
+a1 = run(area)
 
-a2 = 0
-for k, v in area.items():
-    if v == ".":
-        result = solve(area, k)
-        if result == "loop":
-            a2 += 1
+empty = [k for k, v in area.items() if v == '.']
+a2 = [run(area, x) for x in empty].count("loop")
 
 print_answers(a1, a2, day=6)
-# 1473 low
