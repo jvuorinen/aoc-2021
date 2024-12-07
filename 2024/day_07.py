@@ -2,34 +2,32 @@ from itertools import product
 from tqdm import tqdm
 from utils import read, print_answers
 
-# raw = read().split("\n")
-raw = read(2024, 7).split("\n")
 
-a1 = 0
-tot = set()
-
-for line in tqdm(raw):
+def check(line, ops):
     a, b = line.split(': ')
     a = int(a)
     b = b.split(' ')
-
     size = len(b) - 1
 
-    for ops in product(*[list('+*') for _ in range(size)]):
+    for oc in product(*[list(ops) for _ in range(size)]):
         ints = [int(x) for x in b]
         res = ints.pop(0)
-        for op in ops:
+        for op in oc:
+            x = ints.pop(0)
             if op == '|':
-                res = int(f"{res}{ints.pop(0)}")
+                res = int(f"{res}{x}")
             else:
-                exec(f'res = res {op} {ints.pop(0)}')
+                res = eval(f'res {op} {x}')
         if res == a:
-            tot.add(a)
-            break
+            return a
+    return 0
 
 
-a1 = sum(tot)
-a2 = None
+# lines = read().split("\n")
+lines = read(2024, 7).split("\n")
+
+a1 = sum(set(check(line, '+*') for line in tqdm(lines)))
+a2 = sum(set(check(line, '+*') or check(line, '+*|') for line in tqdm(lines)))
 
 print_answers(a1, a2, day=7)
 # 3351424677624
