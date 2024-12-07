@@ -17,9 +17,8 @@ def backtrack(val, exp, ns, ops):
     if not ns:
         return val if (val == exp) else None
     for op in ops:
-        _n, _ns = ns[0], ns[1:]
-        _val = _apply(val, op, _n)
-        if res := backtrack(_val, exp, _ns, ops):
+        _val = _apply(val, op,  ns[0])
+        if res := backtrack(_val, exp, ns[1:], ops):
             return res
 
 
@@ -34,6 +33,6 @@ def check(line, ops):
 lines = read(2024, 7).split("\n")
 
 a1 = sum(check(x, "*+") for x in lines)
-a2 = sum(check(x, "*+") or check(x, "*|+") for x in lines)
+a2 = sum(check(x, "|*+") for x in lines)
 
 print_answers(a1, a2, day=7)
