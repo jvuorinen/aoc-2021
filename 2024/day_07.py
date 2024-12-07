@@ -1,4 +1,3 @@
-from itertools import product
 from utils import read, print_answers
 
 
@@ -12,18 +11,24 @@ def _apply(val, op, x):
             return val * x
 
 
+def backtrack(val, exp, ns, ops):
+    if val > exp:
+        return
+    if not ns:
+        return val if (val == exp) else None
+    for op in ops:
+        _n, _ns = ns[0], ns[1:]
+        _val = _apply(val, op, _n)
+        if res := backtrack(_val, exp, _ns, ops):
+            return res
+
+
 def check(line, ops):
     _exp, _ns = line.split(": ")
     exp = int(_exp)
     ns = [int(x) for x in _ns.split(" ")]
-
-    for cmb in product(*[list(ops)] * (len(ns) - 1)):
-        val, rest = ns[0], ns[1:]
-        for op in cmb:
-            val = _apply(val, op, rest.pop(0))
-        if val == exp:
-            return exp
-    return 0
+    first, rest = ns[0], ns[1:]
+    return backtrack(first, exp, rest, ops) or 0
 
 
 lines = read(2024, 7).split("\n")
