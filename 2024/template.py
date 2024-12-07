@@ -1,4 +1,4 @@
-from itertools import combinations, permutations, count, cycle
+from itertools import combinations, permutations, product, count, cycle
 from functools import reduce, cache
 from collections import Counter, defaultdict, deque
 from math import prod
