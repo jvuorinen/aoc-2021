@@ -3,29 +3,23 @@ from collections import defaultdict
 from utils import read, print_answers
 
 raw = read(2024, 8).split("\n")
+A = {c - 1j * r: x for r, line in enumerate(raw) for c, x in enumerate(line)}
 
-ants = defaultdict(set)
-space = set()
+antennas = defaultdict(set)
+for loc, x in A.items():
+    if x != ".":
+        antennas[x] |= {loc}
 
-for r, line in enumerate(raw):
-    for c, x in enumerate(line):
-        if x != ".":
-            ants[x] |= {c - 1j * r}
-        space.add(c - 1j * r)
-
-alt = set()
-for tp, locs in ants.items():
+part1 = set()
+part2 = set()
+for tp, locs in antennas.items():
     for a1, a2 in combinations(locs, 2):
-        d = a2-a1
-        new = a1
-        while (new := new - d) in space:
-            alt |= {new}
-        new = a1    
-        while (new := new + d) in space:
-            alt |= {new}
-        alt |= {a1}
-        
-a1 = len(alt)
-a2 = None
+        d = a2 - a1
+        part1 |= {a1 - d, a2 + d} & A.keys()
+        part2 |= {a1}
+        for dd in (d, -d):
+            n = a1
+            while (n := n + dd) in A:
+                part2 |= {n}
 
-print_answers(a1, a2, day=8)
+print_answers(len(part1), len(part2), day=8)
