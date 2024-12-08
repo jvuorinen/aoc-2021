@@ -3,8 +3,9 @@ from functools import reduce, cache
 from collections import Counter, defaultdict, deque
 from math import prod
 import numpy as np
-import re
+from re import findall
 import networkx as nx
+from tqdm import tqdm
 from utils import read, print_answers
 
 raw = read().split("\n")
