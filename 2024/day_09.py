@@ -16,20 +16,20 @@ def solve1(data):
 
 def solve2(data, idx_file, idx_empty, empty):
     data = data.copy()
-    empty_areas = [(ie, len(e)) for ie, e, in zip(idx_empty, empty) if e]
+    empty_areas = [(ie, len(e)) for ie, e in zip(idx_empty, empty) if e]
 
     for ii, f in zip(idx_file[::-1], files[::-1]):
         s = len(f)
-        for j, (i, es) in enumerate(empty_areas):
+        for ie, (i, es) in enumerate(empty_areas):
             if i >= ii:
                 break
             if es < s:
                 continue
             data[i : i + s] = f
             data[ii : ii + s] = [None] * s
-            empty_areas.pop(j)
+            empty_areas.pop(ie)
             if ns := es - s:
-                empty_areas.insert(j, (i + s, ns))
+                empty_areas.insert(ie, (i + s, ns))
             break
 
     return sum(i * (x or 0) for i, x in enumerate(data))
