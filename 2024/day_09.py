@@ -14,18 +14,11 @@ def solve1(data):
         data[i], data[ii] = data[ii], data[i]
 
 
-def solve2(data):
+def solve2(data, idx_file, idx_empty, empty):
     data = data.copy()
+    empty_areas = [(ie, len(e)) for ie, e, in zip(idx_empty, empty) if e]
 
-    file_ixs = [data.index(i) for i in range(len(files))]
-    empty_areas = []
-    for fi, fii, f in zip(file_ixs, file_ixs[1:], files):
-        empty_idx = fi + len(f)
-        empty_size = fii - (fi + len(f))
-        if empty_size:
-            empty_areas.append((empty_idx, empty_size))
-
-    for ii, f in zip(file_ixs[::-1], files[::-1]):
+    for ii, f in zip(idx_file[::-1], files[::-1]):
         s = len(f)
         for j, (i, es) in enumerate(empty_areas):
             if i >= ii:
@@ -47,12 +40,16 @@ raw = read(2024, 9)
 files = [int(c) * [i] for i, c in enumerate(raw[::2])]
 empty = [int(c) * [None] for c in raw[1::2]]
 
-data = []
+i = 0
+data, idx_file, idx_empty = [], [], []
 for f, e in zip(files, empty + [[None]]):
     data.extend(f)
     data.extend(e)
+    idx_file.append(i)
+    idx_empty.append(i := i + len(f))
+    i += len(e)
 
 a1 = solve1(data)
-a2 = solve2(data)
+a2 = solve2(data, idx_file, idx_empty, empty)
 
 print_answers(a1, a2, day=9)
