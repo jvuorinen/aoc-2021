@@ -3,7 +3,6 @@ from utils import read, print_answers
 
 def solve1(data):
     data = data.copy()
-
     i, ii = 0, len(data) - 1
     while True:
         while data[i] is not None:
@@ -18,22 +17,26 @@ def solve1(data):
 def solve2(data):
     data = data.copy()
 
-    ixs = [data.index(i) for i in range(len(files))]
-    empty = [(i + len(f), ii - (i + len(f))) for i, ii, f in zip(ixs, ixs[1:], files)]
-    empty = [(i, s) for i, s in empty if s]
+    file_ixs = [data.index(i) for i in range(len(files))]
+    empty_areas = []
+    for fi, fii, f in zip(file_ixs, file_ixs[1:], files):
+        empty_idx = fi + len(f)
+        empty_size = fii - (fi + len(f))
+        if empty_size:
+            empty_areas.append((empty_idx, empty_size))
 
-    for ii, f in zip(ixs[::-1], files[::-1]):
+    for ii, f in zip(file_ixs[::-1], files[::-1]):
         s = len(f)
-        for j, (i, es) in enumerate(empty):
+        for j, (i, es) in enumerate(empty_areas):
             if i >= ii:
                 break
             if es < s:
                 continue
             data[i : i + s] = f
             data[ii : ii + s] = [None] * s
-            empty.pop(j)
+            empty_areas.pop(j)
             if ns := es - s:
-                empty.insert(j, (i + s, ns))
+                empty_areas.insert(j, (i + s, ns))
             break
 
     return sum(i * (x or 0) for i, x in enumerate(data))
@@ -42,12 +45,12 @@ def solve2(data):
 raw = read(2024, 9)
 
 files = [int(c) * [i] for i, c in enumerate(raw[::2])]
-space = [int(c) * [None] for c in raw[1::2]]
+empty = [int(c) * [None] for c in raw[1::2]]
 
 data = []
-for f, s in zip(files, space + [[None]]):
+for f, e in zip(files, empty + [[None]]):
     data.extend(f)
-    data.extend(s)
+    data.extend(e)
 
 a1 = solve1(data)
 a2 = solve2(data)
