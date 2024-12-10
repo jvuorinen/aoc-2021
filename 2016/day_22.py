@@ -1,38 +1,24 @@
-from itertools import combinations, permutations, count, cycle
-from functools import reduce, cache
-from collections import Counter, defaultdict, deque
-from math import prod
-import numpy as np
+from itertools import permutations
 from re import findall
-import networkx as nx
-from dataclasses import dataclass
 from utils import read, print_answers
 
-
-@dataclass
-class Node:
-    name: str
-    size: int
-    used: int
-    av: int
-    pct: int
-
-    def __hash__(self):
-        return hash(self.name)
 
 lines = read(2016, 22).split("\n")
 
 nodes = []
 for line in lines[2:]:
-    name = line.split(' ')[0]
-    size, used, av, pct = map(int, findall(r" (\d+)", line))
-    nodes.append(Node(name, size, used, av, pct))
+    name, rest = line.split(' ', 1)
+    coords = complex(*map(int, findall(r"\d+", name)))
+    _, used, av, _ = map(int, findall(r"\d+", rest))
+    nodes += [(coords, int(used), int(av))]
 
-good = set([
-    (a, b) for a, b in permutations(nodes, 2)
-    if a.used > 0 and a.used <= b.av])
+a1 = sum([1 for a, b in permutations(nodes, 2) if a[1] and a[1] <= b[2]])
 
-a1 = None
+
+free = next(n[0] for n in nodes if n[1] == 0)
+tgt = max(z[0].real for z in nodes) + 0j
+movable = [n[0] for n in nodes if n[1] < 100]
+
+
 a2 = None
-
 print_answers(a1, a2, day=22)
