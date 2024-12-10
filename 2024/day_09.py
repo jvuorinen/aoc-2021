@@ -32,14 +32,13 @@ def solve2(blocks):
         for ie, (i, se) in enumerate(empty):
             if i >= ii:
                 break
-            if se < sf:
-                continue
-            data[i : i + sf] = [f_id] * sf
-            data[ii : ii + sf] = [None] * sf
-            empty.pop(ie)
-            if ns := se - sf:
-                empty.insert(ie, (i + sf, ns))
-            break
+            if se >= sf:
+                data[i : i + sf] = [f_id] * sf
+                data[ii : ii + sf] = [None] * sf
+                empty.pop(ie)
+                if ns := se - sf:
+                    empty.insert(ie, (i + sf, ns))
+                break
     return checksum(data)
 
 
