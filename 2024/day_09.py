@@ -27,7 +27,6 @@ def solve2(blocks):
     data = unfold(blocks)
     files = [*enumerate(blocks[::2])]
     empty = [b for b in blocks[1::2] if b[1]]
-
     for f_id, (ii, sf) in files[::-1]:
         for ie, (i, se) in enumerate(empty):
             if i >= ii:
@@ -43,11 +42,9 @@ def solve2(blocks):
 
 
 raw = read(2024, 9)
-
-i, blocks = 0, []
-for x in list(raw):
-    blocks += [(i, s := int(x))]
-    i += s
+i = 0
+ixs = [i := i + int(x) for x in list('0' + raw)]
+blocks = [(i, int(x)) for i, x in zip(ixs, list(raw))]
 
 a1 = solve1(blocks)
 a2 = solve2(blocks)
