@@ -10,7 +10,7 @@ def unfold(blocks):
     return [x for xs in nested for x in xs]
 
 
-def solve1(data):
+def solve1(blocks):
     data = unfold(blocks)
     i, ii = 0, len(data) - 1
     while True:
