@@ -18,7 +18,7 @@ def solve(stone, reps):
     return solve(2024 * stone, reps - 1)
 
 
-a1 = sum([solve(x, 25) for x in stones])
-a2 = sum([solve(x, 75) for x in stones])
+a1 = sum(solve(x, 25) for x in stones)
+a2 = sum(solve(x, 75) for x in stones)
 
 print_answers(a1, a2, day=11)
