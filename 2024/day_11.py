@@ -11,7 +11,7 @@ def solve(stone, reps):
         return 1
     if stone == 0:
         return solve(1, reps - 1)
-    elif len(ss := str(stone)) % 2 == 0:
+    if len(ss := str(stone)) % 2 == 0:
         a = int(ss[: len(ss) // 2])
         b = int(ss[len(ss) // 2 :])
         return solve(a, reps - 1) + solve(b, reps - 1)
