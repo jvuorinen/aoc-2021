@@ -6,7 +6,7 @@ raw = read(2024, 13).split("\n\n")
 
 ans = [0, 0]
 for line in raw:
-    nums = [*map(int, findall(r'\d+', line))]
+    nums = [*map(int, findall(r"\d+", line))]
 
     X = np.array([nums[0:2], nums[2:4]]).T
     y = np.array([nums[4:]]).T
