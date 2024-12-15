@@ -16,7 +16,7 @@ def descendants(p, d, boxes, part2):
         return [_p] if (_p := p + d) in boxes else []
     if d in (-1, 1):
         return [_p] if (_p := p + 2 * d) in boxes else []
-    return [_p for dd in (-1, 0, 1) if (_p := p + d + dd) in boxes] or []
+    return [_p for dd in (0, 1) if (_p := get_box(p + d + dd, boxes, part2)) in boxes]
 
 
 def build_stack(p, d, boxes, walls, stack, part2):
