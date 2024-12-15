@@ -7,16 +7,14 @@ dirs = [{"<": -1, ">": 1, "^": -1j, "v": 1j}[x] for x in _dirs.replace("\n", "")
 def has_box(p, boxes, part2):
     if not part2:
         return p in boxes
-    return p in boxes or (p-1) in boxes 
+    return p in boxes or (p - 1) in boxes
 
 
 def descendants(p, d, boxes, part2):
     if not part2:
-        _p = p + d
-        return [_p] if _p in boxes else []
+        return [_p] if (_p := p + d) in boxes else []
     if d in (-1, 1):
-        _p = p + 2*d
-        return [_p] if _p in boxes else []
+        return [_p] if (_p := p + 2 * d) in boxes else []
     return [_p for dd in (-1, 0, 1) if (_p := p + d + dd) in boxes] or []
 
 
@@ -49,7 +47,7 @@ def solve(area, part2=False):
     floor = set([k for k, v in M.items() if v != "#"])
 
     for d in dirs:
-        if p + d in floor and not has_box(p+d, boxes, part2):
+        if p + d in floor and not has_box(p + d, boxes, part2):
             p += d
         else:
             stack = build_stack(p + d, d, boxes, floor, set(), part2)
