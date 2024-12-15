@@ -20,10 +20,6 @@ def descendants(p, d, boxes, part2):
 
 
 def build_stack(p, d, boxes, walls, stack, part2):
-    if part2 and p - 1 in boxes:
-        p -= 1
-    if p not in boxes:
-        return
     _p = p + d
     if (_p in walls) or (part2 and (_p + 1 in walls)):
         stack.clear()
