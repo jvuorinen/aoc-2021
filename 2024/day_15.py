@@ -8,8 +8,8 @@ import networkx as nx
 from tqdm import tqdm
 from utils import read, print_answers
 
-a, b = read().split("\n\n")
-# a, b = read(2024, 15).split("\n\n")
+# a, b = read().split("\n\n")
+a, b = read(2024, 15).split("\n\n")
 
 
 a = a.replace("#", "##")
@@ -53,14 +53,14 @@ def get_stack(p, d, stack):
     # print(p, " is free")
     stack.add(p)
     if d in (1, -1):
-        if _p + d in barrels:
+        if stack and _p + d in barrels:
             get_stack(_p + d, d, stack)
     else:
-        if _p - 1 in barrels:
+        if stack and _p - 1 in barrels:
             get_stack(_p - 1, d, stack)
-        if _p in barrels:
+        if stack and _p in barrels:
             get_stack(_p, d, stack)
-        if _p + 1 in barrels:
+        if stack and _p + 1 in barrels:
             get_stack(_p + 1, d, stack)
     # print(stack)
     return stack or None
@@ -69,16 +69,22 @@ def get_stack(p, d, stack):
 # get_stack(p, 1, set())
 # draw()
 
+pushes = []
+
 while dirs:
     d = dirs.pop(0)
     if p + d in floor and (p+d) not in barrels and (p+d-1) not in barrels:
-        # print("FREE MOVE")
+        # print({-1: "<", 1: ">", -1j: "^", 1j: "v"}[d])
         p += d
     else:
         stack = get_stack(p+d, d, set())
         if stack:
+            # print("---------")
             # draw()
             # print({-1: "<", 1: ">", -1j: "^", 1j: "v"}[d])
+            # state = (p, barrels)
+            # pushes.append
+            
             barrels -= stack
             barrels |= {b + d for b in stack}
             p += d
@@ -95,4 +101,4 @@ a2 = None
 
 print_answers(a1, a2, day=15)
 # 1426855
-# 1419441 high
+# 1404917
