@@ -19,19 +19,17 @@ def count_predecessors(n, prds=None):
 
 
 raw = read(2024, 16).split("\n")
-
 M = {c - 1j * r: x for r, line in enumerate(raw) for c, x in enumerate(line)}
-start = next(k for k, v in M.items() if v == "S")
 end = next(k for k, v in M.items() if v == "E")
 
+p = next(k for k, v in M.items() if v == "S")
 idgen = count(0)
 predecessors = defaultdict(set)
-seen = {(start, 1): 0}
-Q = [(0, next(idgen), start, 1)]
-while True:
+seen = {(p, 1): 0}
+Q = [(0, next(idgen), p, 1)]
+
+while p != end:
     scr, _, p, d = heappop(Q)
-    if p == end:
-        break
     for move in "flr":
         _p, _d, _scr = step(p, d, scr, move)
         best = seen.get((_p, _d), float("inf"))
