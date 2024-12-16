@@ -7,10 +7,10 @@ from utils import read, print_answers
 sys.setrecursionlimit(100_000)
 
 
-def apply(p, d, scr, m):
-    if m == "f":
+def step(p, d, scr, move):
+    if move == "f":
         return p + d, d, scr + 1
-    return p, d * (1j, -1j)[m == "r"], scr + 1000
+    return p, d * (1j, -1j)[move == "r"], scr + 1000
 
 
 def crawl(Q, seen):
@@ -18,8 +18,8 @@ def crawl(Q, seen):
     if p == end:
         return
 
-    for m in "flr":
-        _p, _d, _scr = apply(p, d, scr, m)
+    for move in "flr":
+        _p, _d, _scr = step(p, d, scr, move)
         best = seen.get((_p, _d), float("inf"))
         if M[_p] in ".SE":
             if _scr <= best:
