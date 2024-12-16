@@ -1,10 +1,7 @@
 from itertools import count
 from collections import defaultdict
 from heapq import heappush, heappop
-import sys
 from utils import read, print_answers
-
-sys.setrecursionlimit(100_000)
 
 
 def step(p, d, scr, move):
@@ -13,25 +10,8 @@ def step(p, d, scr, move):
     return p, d * (1j, -1j)[move == "r"], scr + 1000
 
 
-def crawl(Q, seen):
-    scr, _, p, d = heappop(Q)
-    if p == end:
-        return
-
-    for move in "flr":
-        _p, _d, _scr = step(p, d, scr, move)
-        best = seen.get((_p, _d), float("inf"))
-        if M[_p] in ".SE":
-            if _scr <= best:
-                predecessors[(_p, _d)].add((p, d))
-            if _scr < best:
-                seen[(_p, _d)] = _scr
-                heappush(Q, (_scr, next(idgen), _p, _d))
-
-    crawl(Q, seen)
-
-
-def count_predecessors(n, prds):
+def count_predecessors(n, prds=None):
+    prds = prds or set()
     prds.add(n[0])
     for nn in predecessors[n]:
         count_predecessors(nn, prds)
@@ -48,11 +28,23 @@ idgen = count(0)
 predecessors = defaultdict(set)
 seen = {(start, 1): 0}
 Q = [(0, next(idgen), start, 1)]
-crawl(Q, seen)
+while True:
+    scr, _, p, d = heappop(Q)
+    if p == end:
+        break
+    for move in "flr":
+        _p, _d, _scr = step(p, d, scr, move)
+        best = seen.get((_p, _d), float("inf"))
+        if M[_p] in ".SE":
+            if _scr <= best:
+                predecessors[(_p, _d)].add((p, d))
+            if _scr < best:
+                seen[(_p, _d)] = _scr
+                heappush(Q, (_scr, next(idgen), _p, _d))
 
 endnode = next((p, d) for (p, d), _ in seen.items() if p == end)
 
 a1 = seen[endnode]
-a2 = count_predecessors(endnode, set())
+a2 = count_predecessors(endnode)
 
 print_answers(a1, a2, day=16)
