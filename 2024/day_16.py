@@ -6,19 +6,11 @@ from utils import read, print_answers
 
 sys.setrecursionlimit(100_000)
 
-MOVES = {
-    "f": 1,
-    "l": 1000,
-    "r": 1000,
-}
 
-
-def apply(p, d, m):
+def apply(p, d, scr, m):
     if m == "f":
-        return p + d, d
-    if m == "l":
-        return p, d * (-1j)
-    return p, d * 1j
+        return p + d, d, scr + 1
+    return p, d * (1j, -1j)[m == "r"], scr + 1000
 
 
 def crawl(Q, seen):
@@ -26,14 +18,15 @@ def crawl(Q, seen):
     if p == end:
         return
 
-    for m, s in MOVES.items():
-        _p, _d = apply(p, d, m)
-        _scr = scr + s
-        if M[_p] in ".SE" and _scr <= seen.get((_p, _d), 9999999):
-            predecessors[(_p, _d)].add((p, d))
-        if M[_p] in ".SE" and _scr < seen.get((_p, _d), 9999999):
-            seen[(_p, _d)] = _scr
-            heappush(Q, (_scr, next(idgen), _p, _d))
+    for m in "flr":
+        _p, _d, _scr = apply(p, d, scr, m)
+        best = seen.get((_p, _d), float("inf"))
+        if M[_p] in ".SE":
+            if _scr <= best:
+                predecessors[(_p, _d)].add((p, d))
+            if _scr < best:
+                seen[(_p, _d)] = _scr
+                heappush(Q, (_scr, next(idgen), _p, _d))
 
     crawl(Q, seen)
 
@@ -57,7 +50,7 @@ seen = {(start, 1): 0}
 Q = [(0, next(idgen), start, 1)]
 crawl(Q, seen)
 
-endnode = next((p, d) for (p, d), v in seen.items() if p == end)
+endnode = next((p, d) for (p, d), _ in seen.items() if p == end)
 
 a1 = seen[endnode]
 a2 = count_predecessors(endnode, set())
