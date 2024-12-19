@@ -8,8 +8,10 @@ mats = _m.split("\n")
 
 
 @cache
-def count(m):
-    return 1 if not m else sum(count(m[len(p) :]) for p in pats if m.startswith(p))
+def count(mat):
+    if not mat:
+        return 1
+    return sum(count(mat[len(p) :]) for p in pats if mat.startswith(p))
 
 
 nways = [count(m) for m in mats]
