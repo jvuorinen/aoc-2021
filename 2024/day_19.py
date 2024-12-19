@@ -9,9 +9,7 @@ mats = _m.split("\n")
 
 @cache
 def matches(mat):
-    if len(mat) == 0:
-        return 1
-    return sum(matches(mat[len(p) :]) for p in pats if mat.startswith(p))
+    return 1 if not mat else sum(matches(mat[len(p) :]) for p in pats if mat.startswith(p))
 
 
 nways = [matches(m) for m in mats]
