@@ -8,9 +8,9 @@ mats = _m.split("\n")
 
 
 @cache
-def matches(mat):
-    return 1 if not mat else sum(matches(mat[len(p) :]) for p in pats if mat.startswith(p))
+def count(m):
+    return 1 if not m else sum(count(m[len(p) :]) for p in pats if m.startswith(p))
 
 
-nways = [matches(m) for m in mats]
+nways = [count(m) for m in mats]
 print_answers(sum(x > 0 for x in nways), sum(nways), day=19)
