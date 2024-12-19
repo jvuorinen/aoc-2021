@@ -8,7 +8,7 @@ mats = _m.split("\n")
 
 
 @cache
-def matches(mat, s=0):
+def matches(mat):
     if len(mat) == 0:
         return 1
     return sum(matches(mat[len(p) :]) for p in pats if mat.startswith(p))
