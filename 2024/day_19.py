@@ -11,14 +11,8 @@ mats = _m.split("\n")
 def matches(mat, s=0):
     if len(mat) == 0:
         return 1
-    for p in [p for p in pats if mat.startswith(p)]:
-        s += matches(mat[len(p) :])
-    return s
+    return sum(matches(mat[len(p) :]) for p in pats if mat.startswith(p))
 
 
 nways = [matches(m) for m in mats]
-
-a1 = sum(x > 0 for x in nways)
-a2 = sum(nways)
-
-print_answers(a1, a2, day=19)
+print_answers(sum(x > 0 for x in nways), sum(nways), day=19)
