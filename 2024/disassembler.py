@@ -16,7 +16,7 @@ def get_line(cmd, arg):
     }[cmd]
 
 
-def disasemble(prg, mem):
+def disassemble(prg, mem):
     init = "def run():\n"
     init += "".join(f"    {k} = {v}\n" for k, v in mem.items())
     init += "    out = []\n\n"
@@ -34,5 +34,5 @@ a, b, c = map(int, findall(r"\d+", p1))
 mem = {"a": a, "b": b, "c": c}
 prg = [*map(int, p2.split(" ")[1].split(","))]
 
-python = disasemble(prg, mem)
+python = disassemble(prg, mem)
 print(python)
