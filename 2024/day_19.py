@@ -15,28 +15,26 @@ a, b = raw.split('\n\n')
 pats = a.split(', ')
 mats = b.split('\n')
 
+def get_pattern(ps):
+    pgs = "|".join(f"{p}" for p in ps)
+    return f"^({pgs})(.*)$"
+
+
 @cache
 def matches(mat, s=0):
-    # print(mat)
     if len(mat) == 0:
         return 1
     ps = set(pats)
-    while ps:
-        pgs = "|".join(f"{p}" for p in ps)
-        p = f"^({pgs})(.*)$"
-        if (match := findall(p, mat)):
-            a, b = match[0]
-            ps.remove(a)
-            s += matches(b)
-        else:
-            break
-        # print(match)
+    while (match := findall(get_pattern(ps), mat)):
+        a, b = match[0]
+        ps.remove(a)
+        s += matches(b)
     return s
 
-ns = [matches(m) for m in tqdm(mats)]
+nways = [matches(m) for m in tqdm(mats)]
 
-a1 = sum(x > 0 for x in ns)
-a2 = sum(ns)
+a1 = sum(x > 0 for x in nways)
+a2 = sum(nways)
 
 print_answers(a1, a2, day=19)
 # 315
