@@ -26,7 +26,7 @@ def get_paths(pad, fr, to):
 
 @cache
 def shortest(seq, depth):
-    pad = DIR if any([ch in seq for ch in "<>^v"]) else NUM
+    pad = DIR if any(ch in seq for ch in "<>^v") else NUM
     aseq = "A" + seq
     possible = [get_paths(pad, fr, to) for fr, to in zip(aseq[:-1], aseq[1:])]
     if depth == 0:
