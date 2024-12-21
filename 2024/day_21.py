@@ -8,7 +8,6 @@ NUM = {x: c - 1j * r for r, line in enumerate(["789","456", "123", "x0A"]) for c
 DIR = {x: c - 1j * r for r, line in enumerate(["x^A", "<v>"]) for c, x in enumerate(line) if x != "x"}
 D = {-1: "<", 1: ">", 1j: "^", -1j: "v"}
 
-pads = [NUM, DIR, DIR, DIR]
 
 def get_paths(pad, fr, to, paths = None):
     paths = paths or set()
@@ -34,16 +33,16 @@ def get_paths(pad, fr, to, paths = None):
 
 
 @cache
-def produce(code, depth):
-    pad = DIR if any([ch in code for ch in "<>^v"]) else NUM
-    stuff = [get_paths(pad, fr, to) for fr, to in zip(code[:-1], code[1:])]
+def shortest(seq, depth):
+    pad = DIR if any([ch in seq for ch in "<>^v"]) else NUM
+    stuff = [get_paths(pad, fr, to) for fr, to in zip(seq[:-1], seq[1:])]
     if depth == 0:
         return sum([min(map(len, x)) for x in stuff])
-    return sum(min([produce("A" + x, depth-1) for x in s]) for s in stuff)
+    return sum(min([shortest("A" + x, depth-1) for x in s]) for s in stuff)
 
 
 def get_complexity(code, depth):
-    return int(findall(r"\d+", code)[0]) * produce("A" + code, depth)
+    return int(findall(r"\d+", code)[0]) * shortest("A" + code, depth)
 
 
 codes = read(2024, 21).split("\n")
