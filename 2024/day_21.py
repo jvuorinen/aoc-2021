@@ -11,8 +11,6 @@ D = {-1: "<", 1: ">", 1j: "^", -1j: "v"}
 
 def get_paths(pad, fr, to):
     d = pad[to] - pad[fr]
-    rev = {v: k for k, v in pad.items()}
-
     rm = int(abs(d.real))
     rd = int(d.real / rm) if rm else 0
     im = int(abs(d.imag))
@@ -21,9 +19,10 @@ def get_paths(pad, fr, to):
     paths = set()
     for prm in permutations([rd] * rm + [1j * id] * im):
         tst = pad[fr]
-        if all((tst:= tst + dd) in rev for dd in prm):
+        if all((tst := tst + dd) in pad.values() for dd in prm):
             paths.add("".join(map(D.get, prm)) + "A")
     return paths
+
 
 @cache
 def shortest(seq, depth):
