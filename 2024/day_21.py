@@ -1,4 +1,3 @@
-from itertools import permutations
 from functools import cache
 from utils import read, print_answers
 
@@ -16,11 +15,13 @@ def get_paths(pad, fr, to):
     d = pad[to] - pad[fr]
     rm, rd = magnitude_and_dir(int(d.real))
     im, id = magnitude_and_dir(int(d.imag))
+    a = [rd] * rm
+    b = [1j * id] * im
     paths = set()
-    for prm in permutations([rd] * rm + [1j * id] * im):
+    for ds in (a+b, b+a):
         tst = pad[fr]
-        if all((tst := tst + dd) in pad.values() for dd in prm):
-            paths.add("".join(map(D.get, prm)) + "A")
+        if all((tst := tst + dd) in pad.values() for dd in ds):
+            paths.add("".join(map(D.get, ds)) + "A")
     return paths
 
 
