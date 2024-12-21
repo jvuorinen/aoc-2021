@@ -35,10 +35,10 @@ def get_paths(pad, fr, to, paths = None):
 @cache
 def shortest(seq, depth):
     pad = DIR if any([ch in seq for ch in "<>^v"]) else NUM
-    stuff = [get_paths(pad, fr, to) for fr, to in zip(seq[:-1], seq[1:])]
+    possible = [get_paths(pad, fr, to) for fr, to in zip(seq[:-1], seq[1:])]
     if depth == 0:
-        return sum([min(map(len, x)) for x in stuff])
-    return sum(min([shortest("A" + x, depth-1) for x in s]) for s in stuff)
+        return sum([min(map(len, s)) for s in possible])
+    return sum(min([shortest("A" + x, depth-1) for x in s]) for s in possible)
 
 
 def get_complexity(code, depth):
