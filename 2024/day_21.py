@@ -25,8 +25,6 @@ def get_paths(pad, fr, to):
             paths.add("".join(map(D.get, prm)) + "A")
     return paths
 
-pad, fr, to = NUM, "A", "1"
-
 @cache
 def shortest(seq, depth):
     pad = DIR if any([ch in seq for ch in "<>^v"]) else NUM
