@@ -9,13 +9,14 @@ DIR = {x: c - 1j * r for r, line in enumerate(["x^A", "<v>"]) for c, x in enumer
 D = {-1: "<", 1: ">", 1j: "^", -1j: "v"}
 
 
+def magnitude_and_dir(n):
+    return abs(n), n // abs(n) if n else 0
+
+
 def get_paths(pad, fr, to):
     d = pad[to] - pad[fr]
-    rm = int(abs(d.real))
-    rd = int(d.real / rm) if rm else 0
-    im = int(abs(d.imag))
-    id = int(d.imag / im) if im else 0
-
+    rm, rd = magnitude_and_dir(int(d.real))
+    im, id = magnitude_and_dir(int(d.imag))
     paths = set()
     for prm in permutations([rd] * rm + [1j * id] * im):
         tst = pad[fr]
@@ -29,8 +30,8 @@ def shortest(seq, depth):
     pad = DIR if any([ch in seq for ch in "<>^v"]) else NUM
     possible = [get_paths(pad, fr, to) for fr, to in zip(seq[:-1], seq[1:])]
     if depth == 0:
-        return sum([min(map(len, s)) for s in possible])
-    return sum(min([shortest("A" + x, depth - 1) for x in s]) for s in possible)
+        return sum(min(map(len, s)) for s in possible)
+    return sum(min(shortest("A" + x, depth - 1) for x in s) for s in possible)
 
 
 def get_complexity(code, depth):
