@@ -15,10 +15,9 @@ def get_paths(pad, fr, to):
     d = pad[to] - pad[fr]
     rm, rd = magnitude_and_dir(int(d.real))
     im, id = magnitude_and_dir(int(d.imag))
-    a = [rd] * rm
-    b = [1j * id] * im
+    seq = [rd] * rm + [1j * id] * im
     paths = set()
-    for ds in (a+b, b+a):
+    for ds in (seq, seq[::-1]):
         tst = pad[fr]
         if all((tst := tst + dd) in pad.values() for dd in ds):
             paths.add("".join(map(D.get, ds)) + "A")
