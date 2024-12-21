@@ -1,6 +1,5 @@
 from itertools import permutations
 from functools import cache
-from re import findall
 from utils import read, print_answers
 
 
@@ -35,7 +34,7 @@ def shortest(seq, depth):
 
 
 def get_complexity(code, depth):
-    return int(findall(r"\d+", code)[0]) * shortest("A" + code, depth)
+    return int(code[:-1]) * shortest("A" + code, depth)
 
 
 codes = read(2024, 21).split("\n")
