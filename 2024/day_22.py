@@ -21,8 +21,8 @@ for i, n in enumerate(map(int, raw)):
     for j, c in enumerate(chunks[::-1], 1):
         D[i][c] = ps[-j]
 
-cnt = Counter(tuple(x) for d in D for x in d)
-best = sorted(cnt, key=cnt.get)[-100:]
-a2 = max(sum(d.get(k, 0) for d in D) for k in best)
+counts = Counter(x for d in D for x in d)
+candidates = sorted(counts, key=counts.get)[-100:]
+a2 = max(sum(d.get(c, 0) for d in D) for c in candidates)
 
 print_answers(a1, a2, day=22)
