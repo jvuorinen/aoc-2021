@@ -1,8 +1,9 @@
 from collections import defaultdict
 from utils import read, print_answers
 
-def run(program):
+def run(program, a):
     mem = defaultdict(int)
+    mem["a"] = a
     while mem["i"] < len(program):
         cmd, *args = program[mem["i"]].split(" ")
         # print(cmd, args, mem)
@@ -32,7 +33,7 @@ def run(program):
 
 program = read().split("\n")
 # program = read(2016, 23).split("\n")
-# run(program)
+# run(program, 7)
 
 
 # a1 = run(program)
