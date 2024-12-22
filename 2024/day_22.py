@@ -1,3 +1,4 @@
+from collections import Counter
 from utils import read, print_answers
 
 
@@ -20,7 +21,8 @@ for i, n in enumerate(map(int, raw)):
     for j, c in enumerate(chunks[::-1], 1):
         D[i][c] = ps[-j]
 
-keys = set.union(*[set(d) for d in D])
-a2 = max(sum(d.get(k, 0) for d in D) for k in keys)
+cnt = Counter(tuple(x) for d in D for x in d)
+best = sorted(cnt, key=cnt.get)[-100:]
+a2 = max(sum(d.get(k, 0) for d in D) for k in best)
 
 print_answers(a1, a2, day=22)
