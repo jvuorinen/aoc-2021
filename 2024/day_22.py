@@ -1,47 +1,28 @@
-from itertools import product
-import numpy as np
 from utils import read, print_answers
 
+SIZE = 2000
+M = 16777216
+
 def step(n):
-    n = ((n*64) ^ n ) % m
-    n = ((n//32) ^ n ) % m
-    return ((n * 2048) ^ n)  % m
+    n = ((n*64) ^ n ) % M
+    n = ((n//32) ^ n ) % M
+    return ((n * 2048) ^ n) % M
 
-# for line in read().split("\n"):
+raw = read(2024, 22).split("\n")
 
+a1 = 0
+D = [{} for _ in range(len(raw))]
+for i, n in enumerate(map(int, raw)):
+    ns = [n] + [(n := step(n)) for _ in range(SIZE)]
+    ps = [x % 10 for x in ns]
+    ds = [b-a for a, b in zip(ps[:-1], ps[1:])]
+    chunks = [tuple(ds[i:i+4]) for i in range(len(ds)-3)]
+    a1 += ns[-1]
+    for j, c in enumerate(chunks[::-1], 1):
+        D[i][c] = ps[-j]
 
-
-raw = read().split("\n")
-# raw = read(2024, 22).split("\n")
-ns = np.array([*map(int, raw)])
-
-m = 16777216
-
-
-res = []
-res.append(ns % 10)
-for _ in range(2000):
-    ns = np.array([*map(step, ns)])
-    res.append(ns % 10)
-
-p = np.array(res).T
-d = np.diff(p)
-
-
-pats = np.array([[row[i:i+4] for i in range(len(row)-3)] for row in d])
-ds = [{} for _ in range(len(p))]
-for i, m in enumerate(pats):
-    for j, _p in enumerate(m[::-1], 1):
-        ds[i][tuple(_p)] = p[i, -j]
-
-
-def check_pattern(pat):
-    return sum(d.get(pat, 0) for d in ds)
-    
-
-
-a1 = sum(ns)
-a2 = max(check_pattern(p) for p in product(range(-10, 10), repeat=4))
+keys = set.union(*[set(d) for d in D])
+a2 = max(sum(d.get(k, 0) for d in D) for k in keys)
 
 print_answers(a1, a2, day=22)
 # 1931
