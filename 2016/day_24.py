@@ -11,29 +11,28 @@ from utils import read, print_answers
 raw = read(2016, 24).split("\n")
 
 M = {c - 1j * r: x for r, line in enumerate(raw) for c, x in enumerate(line)}
-
-nums = {v: k for k, v in M.items() if v.isdigit()}
 floor = {k for k, v in M.items() if v != '#'}
+nums = {v for v in M.values() if v.isdigit()}
 
-paths = defaultdict(dict)
-for c in nums:
-    i = 0
-    seen = set()
-    todo = {nums[c]}
+def bfs(num):
+    start = next(k for k, v in M.items() if v == num)
+    todo = [(0, start)]
+    ok = floor - {start}
+    res = {}
     while todo:
-        _todo = set()
-        for z in todo:
-            seen.add(z)
-            if (cc := M[z]) != '.':
-                paths[c][cc] = i
-            ns = set([n for d in [1, -1, 1j, -1j] if (n := z + d) in floor and n not in seen])
-            _todo |= ns
-        i += 1
-        todo = _todo
+        i, n = todo.pop(0)
+        if i > 0 and (k := M.get(n, "")).isnumeric():
+            res[k] = i
+        for nn in (n+1, n-1, n+1j, n-1j):
+            if nn in ok:
+                ok.remove(nn)
+                todo.append((i+1, nn))
+    return res
 
-paths
+D = {n: bfs(n) for n in nums}
+D
 
-a1 = max(paths['0'].values())
+a1 = None
 a2 = None
 
 print_answers(a1, a2, day=24)
