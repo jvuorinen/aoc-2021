@@ -6,10 +6,8 @@ def run(program, a):
     program = program.copy()
     mem = defaultdict(int)
     mem["a"] = a
-    j = 0
-    tgl = 0
-    while j < 100000 and mem["i"] < len(program):
-        j += 1
+
+    while mem["i"] < len(program):
         cmd, *args = program[mem["i"]].split(" ")
         match cmd:
             case "cpy":
@@ -26,12 +24,10 @@ def run(program, a):
                 if mem["i"] == 9:
                     mem["a"] += mem["a"] * mem["d"]
                     mem["d"] = 0
-                # /hack
                 exec(f"i += 1 if {args[0]} == 0 else {args[1]}", {}, mem)
             case "tgl":
                 ti = mem["i"] + eval(args[0], {}, mem)
                 if 0 <= ti < len(program):
-                    tgl += 1
                     tc, *targs = program[ti].split(" ")
                     if len(targs) == 1:
                         ct = "dec" if tc == "inc" else "inc"

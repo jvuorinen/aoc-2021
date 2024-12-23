@@ -21,7 +21,7 @@ def all_connected(nds):
 
 tn = {n for n in nodes if n.startswith("t")}
 relevant = tn | {n for x in tn for n in nodes if (n, x) in con}
-a1 = len([c for c in combinations(relevant, 3) if ("t" in "".join(c)[::2]) and all_connected(c)])
+a1 = len([c for c in combinations(relevant, 3) if tn & set(c) and all_connected(c)])
 
 a2 = None
 groups = {frozenset({n} | {nn for nn in nodes if (n, nn) in con}) for n in nodes}
