@@ -5,12 +5,12 @@ from utils import read, print_answers
 _st, _rl = read(2024, 24).split("\n\n")
 state = {}
 for x in _st.split("\n"):
-    c, i = x.split(': ')
+    c, i = x.split(": ")
     state[c] = int(i)
 rules = []
 for x in _rl.split("\n"):
     r, t = x.split(" -> ")
-    rules.append((r.split(' '), t))
+    rules.append((r.split(" "), t))
 
 
 OPS = {
@@ -47,33 +47,33 @@ def run(rules, state, *swaps):
 
 
 def rule_type(a, op, b):
-    if op == 'OR':
+    if op == "OR":
         return "n or n"
-    if op == 'XOR':
+    if op == "XOR":
         return "x xor y" if a[0] in "xy" else "n xor n"
     return "x and y" if a[0] in "xy" else "n and n"
 
-CORRECT = {
-    "x xor y": {"n and n", "n xor n"},
-    "n or n": {"n and n", "n xor n"},
-    "n and n": {"n or n"},
-    "x and y": {"n or n"},
-    "n xor n": "out",
-}
 
 def is_problem(r, t):
+    correct = {
+        "x xor y": {"n and n", "n xor n"},
+        "n or n": {"n and n", "n xor n"},
+        "n and n": {"n or n"},
+        "x and y": {"n or n"},
+        "n xor n": "out",
+    }
     rt = rule_type(*r)
     tt = "out" if t[0] == "z" else {rule_type(*r) for r, _ in rules if t in r}
-    return tt != CORRECT[rt]
+    return tt != correct[rt]
+
 
 def fix(rules, state):
-    candidates = [i for i, (r, t) in enumerate(rules) if is_problem(r, t) ]
+    candidates = [i for i, (r, t) in enumerate(rules) if is_problem(r, t)]
     for swaps in combinations(combinations(candidates, 2), 4):
-        ch = run(rules, state, *swaps)
-        if ch:
-            x, y, z = ch
+        if res := run(rules, state, *swaps):
+            x, y, z = res
             if x + y == z:
-                return  ",".join(sorted([rules[x][1] for sw in swaps for x in sw]))
+                return ",".join(sorted([rules[x][1] for sw in swaps for x in sw]))
 
 
 _, _, a1 = run(rules, state)
