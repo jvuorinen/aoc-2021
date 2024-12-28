@@ -1,17 +1,13 @@
-from itertools import combinations, permutations, count, cycle
-from functools import reduce, cache
-from collections import Counter, defaultdict, deque
-from math import prod
-import numpy as np
-import re
-import networkx as nx
-from utils import read, print_answers
-
-raw = read().split("\n")
-# raw = read(2016, 25).split("\n")
+from utils import print_answers
 
 
-a1 = None
-a2 = None
+def test(a):
+    num = a + 282 * 9
+    res = []
+    while num > 0:
+        res.append(num % 2)
+        num //= 2
+    return len(res) % 2 == 0 and all([x == i % 2 for i, x in enumerate(res)])
 
-print_answers(a1, a2, day=25)
+a1 = next(n for n in range(1000) if test(n))
+print_answers(a1, None, day=25)
