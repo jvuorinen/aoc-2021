@@ -33,6 +33,6 @@ def load_data(year, day):
     fp = f"inputs/{year}/day{day}.txt"
     os.makedirs(os.path.dirname(fp), exist_ok=True)
     with open(fp, "w") as file:
-        txt = res.text if res.text[:-1] != "\n" else res.text
+        txt = res.text[:-1] if res.text[-1] == "\n" else res.text
         file.write(txt)  # Remove last newline
     print(f"Downloaded and wrote data: {fp}")
