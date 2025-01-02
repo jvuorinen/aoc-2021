@@ -1,17 +1,17 @@
-from itertools import combinations, permutations, count, cycle
-from functools import reduce, cache
-from collections import Counter, defaultdict, deque
-from math import prod
 import numpy as np
 import re
-import networkx as nx
 from utils import read, print_answers
 
-raw = read().split("\n")
-# raw = read(2015, 6).split("\n")
+A = np.zeros((1000, 1000), bool)
+B = np.zeros((1000, 1000), int)
 
+for line in read(2015, 6).split("\n"):
+    a, b, c, d = map(int, re.findall(r'\d+',line))
+    if "toggle" in line:
+        A[a:c+1, b:d+1] = ~A[a:c+1, b:d+1]
+        B[a:c+1, b:d+1] += 2
+    else: 
+        A[a:c+1, b:d+1] = ("on" in line)
+        B[a:c+1, b:d+1] = (B[a:c+1, b:d+1] + (-1, 1)["on" in line]).clip(0)
 
-a1 = None
-a2 = None
-
-print_answers(a1, a2, day=6)
+print_answers(A.sum(), B.sum(), day=6)
