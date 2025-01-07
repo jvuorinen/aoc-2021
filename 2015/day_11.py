@@ -1,35 +1,33 @@
 from itertools import groupby
 from utils import read, print_answers
-from string import ascii_lowercase as ABC
+from string import ascii_lowercase
 
-BASE = len(ABC)
-
-
-def n_to_baserep(n, base):
-    while n:
-        n, m = divmod(n, base)
-        yield m
+CHARS = sorted(set(ascii_lowercase))
 
 
-def baserep_to_n(br, base):
-    return sum(x * base**i for i, x in enumerate(br))
-
-
-def check(n):
-    br = list(n_to_baserep(n, BASE))
+# br = base representation
+def check(br):
     if (1, 2) not in ((a - b, a - c) for a, b, c in zip(br[:-2], br[1:-1], br[2:])):
         return False
     if len({n for n, g in groupby(br) if len(list(g)) >= 2}) <= 1:
         return False
-    return not set(br) & set(map(ABC.index, "iol"))
+    return True
+
+
+def increment(br):
+    for i in range(len(br)):
+        br[i] += 2 if CHARS[(br[i] + 1) % len(CHARS)] in "iol" else 1
+        if br[i] < len(CHARS):
+            return
+        br[i] = 0
 
 
 def rotator(pw):
     br = [ord(x) - ord("a") for x in pw[::-1]]
-    n = baserep_to_n(br, BASE)
-    for i in range(1, int(1e12)):
-        if check(n + i):
-            yield "".join(ABC[x] for x in n_to_baserep(n + i, BASE))[::-1]
+    while True:
+        if check(br):
+            yield "".join(CHARS[x] for x in br)[::-1]
+        increment(br)
 
 
 pw = read(2015, 11)
