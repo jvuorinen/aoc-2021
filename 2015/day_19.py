@@ -21,9 +21,7 @@ BUFFER_SIZE = 1
 
 
 def score(test):
-    for i, (a, b) in enumerate(zip(test, MLC)):
-        if a != b:
-            return i
+    return next(i for i, (a, b) in enumerate(zip(test, MLC)) if a != b)
 
 
 def get_replacements(mlc, unlimited=False):
