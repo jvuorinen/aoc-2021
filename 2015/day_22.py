@@ -22,8 +22,9 @@ class State:
     def get_token(self):
         return (
             self.my_turn, self.my_hp, self.my_armor,self.my_mana, self.opp_hp,
-            self.opp_dmg,self.shield, self.poison, self.recharge,
+            self.opp_dmg,self.shield, self.poison, self.recharge
         )
+        
 
 def get_actions(state):
     return [
@@ -39,7 +40,7 @@ def get_actions(state):
     ]
 
 
-def step(state, action=None):
+def apply_effects(state):
     _st = copy(state)
     _st.my_armor = 7 if _st.shield else 0
     if _st.poison:
@@ -49,7 +50,12 @@ def step(state, action=None):
     _st.shield = max(0, _st.shield - 1)
     _st.poison = max(0, _st.poison - 1)
     _st.recharge = max(0, _st.recharge - 1)
-    if _st.my_turn and _st.opp_hp > 0:
+    return _st
+
+
+def step(state, action=None):
+    _st = copy(state)
+    if _st.my_turn:
         spell, cost = action
         _st.my_mana -= cost
         _st.total_mana_spent += cost
@@ -64,33 +70,31 @@ def step(state, action=None):
             _st.poison = 6
         if spell == "rc":
             _st.recharge = 5
-    elif _st.opp_hp > 0:
+    else:
         _st.my_hp -= max(1, _st.opp_dmg - _st.my_armor)
     _st.my_turn = not _st.my_turn
     return _st
 
 
-def fight(state, seen, results):
+def fight(state, seen, results, part2):
     if (token := state.get_token()) not in seen:
         seen.add(token)
-        # if state.my_turn:
-        #     state.my_hp -= 1
+        if part2 and state.my_turn:
+            state.my_hp -= 1
+        state = apply_effects(state)
         if state.my_hp <= 0 or state.opp_hp <= 0:
             win = state.my_hp >= 0 and state.opp_hp <= 0
             results.add((win, state.total_mana_spent))
         elif state.my_turn:
             for a in get_actions(state):
-                fight(step(state, a), seen, results)
+                fight(step(state, a), seen, results, part2)
         else:
-            fight(step(state), seen, results)
+            fight(step(state), seen, results, part2)
 
 
-initial, seen, results = State(), set(), set()
-fight(initial, seen, results)
+def solve(part2=False):
+    state, seen, results = State(), set(), set()
+    fight(state, seen, results, part2)
+    return min(score for win, score in results if win)
 
-a1 = min(score for win, score in results if win)
-a2 = None
-
-print_answers(a1, a2, day=22)
-# 953
-# 1295 high
+print_answers(solve(), solve(part2=True), day=22)
