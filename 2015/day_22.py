@@ -1,10 +1,4 @@
-from itertools import combinations, permutations, count, cycle
-from functools import reduce, cache
-from collections import Counter, defaultdict, deque
-from math import prod
-import numpy as np
 import re
-import networkx as nx
 from dataclasses import dataclass
 from copy import copy
 from utils import read, print_answers
@@ -55,7 +49,7 @@ def step(state, action=None):
     _st.shield = max(0, _st.shield - 1)
     _st.poison = max(0, _st.poison - 1)
     _st.recharge = max(0, _st.recharge - 1)
-    if _st.my_turn:
+    if _st.my_turn and _st.opp_hp > 0:
         spell, cost = action
         _st.my_mana -= cost
         _st.total_mana_spent += cost
@@ -70,7 +64,7 @@ def step(state, action=None):
             _st.poison = 6
         if spell == "rc":
             _st.recharge = 5
-    else:
+    elif _st.opp_hp > 0:
         _st.my_hp -= max(1, _st.opp_dmg - _st.my_armor)
     _st.my_turn = not _st.my_turn
     return _st
@@ -79,8 +73,10 @@ def step(state, action=None):
 def fight(state, seen, results):
     if (token := state.get_token()) not in seen:
         seen.add(token)
-        actions = get_actions(state)
-        if (win := state.opp_hp <= 0) or (state.my_hp <= 0) or not actions:
+        # if state.my_turn:
+        #     state.my_hp -= 1
+        if state.my_hp <= 0 or state.opp_hp <= 0:
+            win = state.my_hp >= 0 and state.opp_hp <= 0
             results.add((win, state.total_mana_spent))
         elif state.my_turn:
             for a in get_actions(state):
